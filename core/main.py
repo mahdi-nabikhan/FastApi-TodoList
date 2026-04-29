@@ -18,3 +18,10 @@ def root():
 @app.get('/names')
 def retrieve_names_list():
     return name_list
+
+
+@app.get('/name/{id}')
+def retrive_name_detail(id:int):
+    for name in name_list:
+        if name['id'] == id:
+            return {name}
