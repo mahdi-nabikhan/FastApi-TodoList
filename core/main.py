@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+import random
 
 app = FastAPI()
 
@@ -24,4 +24,14 @@ def retrieve_names_list():
 def retrive_name_detail(id:int):
     for name in name_list:
         if name['id'] == id:
-            return {name}
+            return name
+        
+        
+@app.post('/name/create')
+def create_user(name):
+    user={'id':random.randint(6,100),'name':name}
+    name_list.append(user)
+    return {'message':'user successfully added'}
+
+
+    
