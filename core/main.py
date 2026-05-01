@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 import random
-
-app = FastAPI()
-
+from fastapi_swagger import patch_fastapi
+app = FastAPI(docs_url=None,swagger_ui_oauth2_redirect_url=None)
+patch_fastapi(app=app,docs_url='/swagger')
 name_list = [
     {'id':1,'name':'mmd'},
     {'id':2,'name':'ali'},
