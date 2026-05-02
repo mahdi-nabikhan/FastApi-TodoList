@@ -1,4 +1,4 @@
-from fastapi import FastAPI,Query,status,HTTPException
+from fastapi import FastAPI,Query,status,HTTPException,Path,Form
 from fastapi.responses import JSONResponse
 import random
 
@@ -24,14 +24,14 @@ def retrieve_names_list():
 
 
 @app.get('/name/{id}',status_code=status.HTTP_200_OK)
-def retrive_name_detail(id:int):
+def retrive_name_detail(id:int=Path(title='object id',description='id of name in')):
     for name in name_list:
         if name['id'] == id:
             return JSONResponse(content={'message':name},status_code=status.HTTP_200_OK)
         
         
 @app.post('/name/create',status_code=status.HTTP_201_CREATED)
-def create_user(name):
+def create_user(name:str = Form()):
     user={'id':random.randint(6,100),'name':name}
     name_list.append(user)
     
@@ -40,7 +40,7 @@ def create_user(name):
 
     
 @app.put('/names/{id}',status_code=status.HTTP_201_CREATED)
-def update_name(id:int,name):
+def update_name(name:str=Form(),id:int=Path(title='object id',description='id of name in name')):
     for item in name_list:
         if item["id"] == id :
             print(item)
@@ -52,7 +52,7 @@ def update_name(id:int,name):
 
 
 @app.delete('/delete/name/{id}',status_code=status.HTTP_204_NO_CONTENT)
-def delete_name(id:int):
+def delete_name(id:int=Path(title='object id',description='id of name in name')):
     for item in name_list:
         if item['id'] == id:
             name_list.remove(item)
