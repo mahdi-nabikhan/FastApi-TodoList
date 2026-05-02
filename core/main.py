@@ -1,4 +1,4 @@
-from fastapi import FastAPI,Query,status,HTTPException,Path,Form
+from fastapi import FastAPI,Query,status,HTTPException,Path,Form,Body,UploadFile,File
 from fastapi.responses import JSONResponse
 import random
 
@@ -31,8 +31,8 @@ def retrive_name_detail(id:int=Path(title='object id',description='id of name in
         
         
 @app.post('/name/create',status_code=status.HTTP_201_CREATED)
-def create_user(name:str = Form()):
-    user={'id':random.randint(6,100),'name':name}
+def create_user(name:str = Body(),age:int=Body(embed=True)):
+    user={'id':random.randint(6,100),'name':name,'age':age}
     name_list.append(user)
     
     return JSONResponse(content={'message':'user successfully added'},status_code=status.HTTP_201_CREATED)
@@ -40,7 +40,7 @@ def create_user(name:str = Form()):
 
     
 @app.put('/names/{id}',status_code=status.HTTP_201_CREATED)
-def update_name(name:str=Form(),id:int=Path(title='object id',description='id of name in name')):
+def update_name(name:str=Body(),id:int=Path(title='object id',description='id of name in name')):
     for item in name_list:
         if item["id"] == id :
             print(item)
@@ -67,3 +67,12 @@ def search_names (q:str |None=Query(max_length=10)):
         
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='name not found')
+    
+    
+    
+    
+@app.post('/upload/file')
+async def upload_file(file:UploadFile=File(...)):
+    content= await file.read()
+    return {'filename':file.filename,'content_type':file.content_type,'file_size':len(content)}
+    
