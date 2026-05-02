@@ -35,3 +35,30 @@ def create_user(name):
 
 
     
+@app.put('/names/{id}')
+def update_name(id,name):
+    for item in name_list:
+        if item["id"] == id :
+            print(item)
+            item["name"] = name
+            return item
+        
+    return {'message':'dont found name'}
+
+
+
+@app.delete('/delete/name/{id}')
+def delete_name(id):
+    for item in name_list:
+        if item['id'] == id:
+            name_list.remove(item)
+            return({'detail':'object delete successfully'})
+    
+    
+    
+@app.get('/search/name')
+def search_names (q:str):
+    if q:
+        return [item for item in name_list if item['name'] == q]
+    else:
+        return {'detail',';;;'}
