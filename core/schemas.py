@@ -1,10 +1,10 @@
-from pydantic import BaseModel,field_validator
+from pydantic import BaseModel,field_validator,Field,field_serializer
 
 
 class BaseModelPersonSchema(BaseModel):
     
+    name:str = Field(...,description='enter Persons name')
     
-    name:str
     @field_validator(name)
     def validation_name(cls,value):
         if len(value > 32):
@@ -12,14 +12,20 @@ class BaseModelPersonSchema(BaseModel):
         if value.isalpha():
             raise ValueError('name must only alphabeti character')
         return value
-class PersonCreateSchema(BaseModelPersonSchema):
     
-    age:int
+    
+    @field_serializer
+    def serialize_name(value):
+        return value.title()
+    
+class PersonCreateSchema(BaseModelPersonSchema):
+    age:int =  Field(...,description='Id of Person')
     
     
     
 class PresonResponseSchema(BaseModelPersonSchema):
-    id:int
+    id:int = Field(...,description='Id of Person')
+    
     
     
     
