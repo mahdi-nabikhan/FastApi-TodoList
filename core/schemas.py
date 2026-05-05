@@ -14,7 +14,7 @@ class BaseModelPersonSchema(BaseModel):
         return value
     
     
-    @field_serializer
+    @field_serializer('name')
     def serialize_name(value):
         return value.title()
     
