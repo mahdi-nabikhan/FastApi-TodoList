@@ -1,10 +1,15 @@
-from fastapi import FastAPI,Query,status,HTTPException,Path,Form,Body,UploadFile,File
+from fastapi import FastAPI,Query,status,HTTPException,Path,Form,Body,UploadFile,File,Depends
 from fastapi.responses import JSONResponse
 import random
 from dataclasses import dataclass
 from schemas import *
+from contextlib import asynccontextmanager
 from typing  import Annotated,List
 from fastapi_swagger import patch_fastapi
+from sqlalchemy.orm import Session
+from database import *
+
+from database import Base,engine,get_db
 app = FastAPI(docs_url=None,swagger_ui_oauth2_redirect_url=None)
 patch_fastapi(app=app,docs_url='/swagger')
 name_list = [
@@ -15,29 +20,34 @@ name_list = [
     {'id':5,'name':'meti'},
 ]
 
-    
+
+
+@asynccontextmanager
+async def lifespan(app:FastAPI):
+    Base.metadate.create_all(engine)
+    yield
+
 @app.get('/')
 def root():
     return JSONResponse(content={'message':'hello world'},status_code=status.HTTP_200_OK)
 
-@app.get('/names',status_code=status.HTTP_200_OK,response_model=List[PresonResponseSchema])
-def retrieve_names_list():
-    return name_list
+@app.get('/names',status_code=status.HTTP_200_OK,response_model=List[PresonResponseSchema] )
+def retrieve_names_list(db:Session=Depends(get_db)):
+    return db.query(User).all()
 
 
 @app.get('/name/{id}',status_code=status.HTTP_200_OK,response_model=PresonResponseSchema)
-def retrive_name_detail(id:int=Path(title='object id',description='id of name in')):
-    for name in name_list:
-        if name['id'] == id:
-            return JSONResponse(content={'message':name},status_code=status.HTTP_200_OK)
+def retrive_name_detail(id:int=Path(title='object id',description='id of name in'), db:Session=Depends(get_db)):
+    return db.query(User).filter_by(id=id).first()
         
         
 @app.post('/name/create',status_code=status.HTTP_201_CREATED,response_model=PresonResponseSchema)
-def create_user(student : PersonCreateSchema):
-    user={'id':random.randint(6,100),'name':student.name,'age':student.age}
-    name_list.append(user)
-    return user
-
+def create_user(student : PersonCreateSchema,db:Session=Depends(get_db)):
+    new_user = User(fistname=student.firstname,lastname=student.lastname,age=student.age)
+    db.add(new_user)
+    db.commit()
+    db.refresh()
+   
 
     
 @app.put('/names/{id}',status_code=status.HTTP_201_CREATED,response_model=PrsonUpdateSchema)

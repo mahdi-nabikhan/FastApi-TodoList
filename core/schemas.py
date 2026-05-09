@@ -3,7 +3,8 @@ from pydantic import BaseModel,field_validator,Field,field_serializer
 
 class BaseModelPersonSchema(BaseModel):
     
-    name:str = Field(...,description='enter Persons name')
+    firstname:str = Field(...,description='enter Persons name')
+    lastname : str = Field(...,description='enter Persons name')
     
     @field_validator('name')
     def validation_name(cls,value):
