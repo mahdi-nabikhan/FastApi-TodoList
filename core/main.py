@@ -46,18 +46,20 @@ def create_user(student : PersonCreateSchema,db:Session=Depends(get_db)):
     new_user = User(fistname=student.firstname,lastname=student.lastname,age=student.age)
     db.add(new_user)
     db.commit()
-    db.refresh()
+    db.refresh(new_user)
    
 
     
 @app.put('/names/{id}',status_code=status.HTTP_201_CREATED,response_model=PrsonUpdateSchema)
-def update_name(name:PrsonUpdateSchema,id:int=Path(title='object id',description='id of name in name')):
-    for item in name_list:
-        if item["id"] == id :
-            print(item)
-            item["name"] = name.name
-            return JSONResponse(content={'message':item},status_code=status.HTTP_201_CREATED)
-        
+def update_name(requst:PrsonUpdateSchema,id:int=Path(title='object id',description='id of name in name'),db:Session=Depends(get_db)):
+    obj = db.query(User).filter_by(id=id).one_or_none()
+    if obj :
+        obj.firstname = requst.firstname
+        obj.lastname = requst.lastname
+        db.commit()
+        db.refresh()
+        return obj
+    else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='name not found')
 
 

@@ -6,7 +6,7 @@ class BaseModelPersonSchema(BaseModel):
     firstname:str = Field(...,description='enter Persons name')
     lastname : str = Field(...,description='enter Persons name')
     
-    @field_validator('name')
+    @field_validator('firstname')
     def validation_name(cls,value):
         if len(value) > 32:
             raise ValueError('name must not exceed 32 character')
@@ -15,8 +15,8 @@ class BaseModelPersonSchema(BaseModel):
         return value
     
     
-    @field_serializer('name')
-    def serialize_name(value):
+    @field_serializer('firstname')
+    def serialize_name(cls,value):
         return value.title()
     
 class PersonCreateSchema(BaseModelPersonSchema):
