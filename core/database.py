@@ -31,6 +31,7 @@ class User(Base):
     firstname = Column(String(length=30))
     lastname = Column(String(50))
     age = Column(Integer)
+    code = Column(Integer)
     
     
     def __repre__(self):
