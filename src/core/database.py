@@ -23,25 +23,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
-class User(Base):
-    __tablename__= 'users'
-    id = Column(Integer,primary_key=True,autoincrement=True)
-    firstname = Column(String(length=30))
-    lastname = Column(String(50))
-    age = Column(Integer)
-    code = Column(Integer)
-    
-    
-    def __repre__(self):
-        return f'User(id ={self.id},firstname={self.firstname})'
-    
-
-    
-    
-    
-    
     
     
 
