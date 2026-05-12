@@ -18,5 +18,5 @@ class TaskUpateSchemas(TaskBaseSchemas):
 
 class TaskResponseSchemas(TaskBaseSchemas):
     id :int = Field(...,description='unique identifier of the object')
-    creared_date : datetime =Field(...,description='Creations date and time of task')
+    created_date : datetime =Field(...,description='Creations date and time of task')
     updated_date : datetime =Field(...,description='Updating date and time of task')
