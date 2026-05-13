@@ -6,6 +6,7 @@ from alembic import context
 from pathlib import Path
 from dotenv import load_dotenv
 from tasks.models import *
+from users.models import *
 # ابتدا مسیر و متغیرهای محیطی را بارگذاری کنید
 BASE_DIR = Path(__file__).resolve().parent.parent / 'core'
 ENV_PATH = BASE_DIR / '.env'
@@ -38,6 +39,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        render_as_batch=True
     )
     with context.begin_transaction():
         context.run_migrations()
@@ -47,10 +49,11 @@ def run_migrations_online() -> None:
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
+
     )
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection, target_metadata=target_metadata,render_as_batch=True
         )
         with context.begin_transaction():
             context.run_migrations()
