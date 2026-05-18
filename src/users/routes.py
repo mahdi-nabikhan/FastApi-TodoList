@@ -11,6 +11,11 @@ router = APIRouter(tags=['users router'])
 
 @router.post('/login')
 async def user_login(request:UserLoginSchemas,db:Session=Depends(get_db)):
+    user_obj = db.query(UserModel).filter_by(username=request.username).first()
+    if not user_obj:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT,detail='username doesnt exist')
+    if  not user_obj.varify_passwod(request.password):
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT,detail='inavlid password')
     return {}
 
 @router.post('/register')
