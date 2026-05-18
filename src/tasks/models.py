@@ -14,4 +14,4 @@ class TaskModel(Base):
     created_date = Column(DateTime,server_default=func.now())
     updated_date =  Column(DateTime,server_default=func.now(),server_onupdate=func.now())
     
-    user = relationship('Usermodel',back_populates='tasks',uselist=False)
+    user = relationship('UserModel',back_populates='tasks',uselist=False)

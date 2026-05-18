@@ -16,7 +16,7 @@ class UserModel(Base):
     
     created_date = Column(DateTime,server_default=func.now())
     updated_date =  Column(DateTime,server_default=func.now(),server_onupdate=func.now())
-    tasks = relationship('TaskModels',back_populates="user")
+    tasks = relationship('TaskModel',back_populates="user")
     
     
     def hash_password(self,plain_password:str)->str:
@@ -25,3 +25,5 @@ class UserModel(Base):
     def varify_passwod(self,plain_password:str)->bool:
         return pwd_context.verify(plain_password,self.password)
     
+    def set_password(self,plain_text:str)->None:
+        self.password =  self.hash_password(plain_text)
