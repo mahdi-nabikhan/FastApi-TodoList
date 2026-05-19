@@ -46,5 +46,6 @@ async def user_login_jwt(request:UserLoginSchemas,db:Session=Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT,detail='username doesnt exist')
     if  not user_obj.varify_passwod(request.password):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT,detail='inavlid password')
-    access_token = generate_access_token()
-    return  JSONResponse(content={'detail':'user logged in successfully' , 'token':access_token})
+    access_token = generate_access_token(user_id=user_obj.id)
+    refresh_token = generate_refresh_token(user_id=user_obj.id)
+    return  JSONResponse(content={'detail':'user logged in successfully' , 'access token':access_token,'refresh token':refresh_token})
