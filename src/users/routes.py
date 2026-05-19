@@ -49,3 +49,12 @@ async def user_login_jwt(request:UserLoginSchemas,db:Session=Depends(get_db)):
     access_token = generate_access_token(user_id=user_obj.id)
     refresh_token = generate_refresh_token(user_id=user_obj.id)
     return  JSONResponse(content={'detail':'user logged in successfully' , 'access token':access_token,'refresh token':refresh_token})
+
+
+
+@router.post('/refresh_token')
+async def user_refresh_token(request:UserRefreshSchemas,db:Session=Depends(get_db)):
+    user_id =decode_refresh_token(request.token)
+    access_token = generate_access_token(user_id=user_id)
+    return  JSONResponse(content={'detail':'user logged in successfully' , 'refresh token':access_token})
+

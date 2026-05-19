@@ -62,3 +62,25 @@ def generate_refresh_token(user_id:int,expire_in:int = 3600* 24) ->str:
     }
         
     return jwt.encode(payload,setting.SECRET_KEY,algorithm='HS256')
+
+
+def decode_refresh_token(token):
+    try:
+        decoded = jwt.decode(token,setting.SECRET_KEY,algorithms='HS256')
+        user_id = decoded.get('user_is',None)
+        if not user_id :
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail='Authenticatoin failed , User_id is not in payload')
+        if not decoded.get('type') != 'refresh':
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail='Authenticatoin failed , token type is not valid')
+        
+        if not datetime.datetime.now() > datetime.datetime.timestamp(decoded.get('exp')) :
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail='Authenticatoin failed , token expired')
+            
+        return user_id
+        
+    except InvalidSignatureError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail='Authenticatoin failed , invalid signture')
+    except DecodeError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail='Decode failed , invalid signture')
+    except Exception as err:
+        HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail='Decode failed , invalid {err}')
