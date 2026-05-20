@@ -96,19 +96,19 @@ def generate_access_token(user_id:int,expire_in:int=3600)->str:
     now=datetime.datetime.now()
     payload = {
         'user_id':user_id,
-        'lat':now,
-        'exp':now + datetime.timedelta(seconds=expire_in),
+         'iat': int(now.timestamp()), 
+        'exp': int((now + datetime.timedelta(seconds=expire_in)).timestamp()),
         'type':'access'
     }
     
     return jwt.encode(payload,setting.SECRET_KEY,algorithm='HS256')
 
-def generate_refresh_token(user_id:int,expire_in:int=3600)->str:
+def generate_refresh_token(user_id:int,expire_in:int=3600*24)->str:
     now=datetime.datetime.now()
     payload = {
         'user_id':user_id,
-        'lat':now,
-        'exp':now + datetime.timedelta(seconds=expire_in),
+        'iat': int(now.timestamp()), 
+        'exp': int((now + datetime.timedelta(seconds=expire_in)).timestamp()),
         'type':'refresh'
     }
     
