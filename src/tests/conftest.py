@@ -12,7 +12,8 @@ from main import app
 from sqlalchemy import StaticPool
 import pytest
 from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy import event
+from core.auth.jwt_auth import get_authenticated_user
 SQLALCHEMY_DATABASE_URL ='sqlite:///:memory:'
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False},
@@ -32,6 +33,12 @@ Base.metadata.create_all(bind=engine)
 
 client =TestClient(app)
 
+@event.listens_for(engine, "connect")
+def enable_foreign_keys(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON;")
+    cursor.close()
+
 
 
 @pytest.fixture(scope="session")
@@ -39,6 +46,26 @@ def client():
     with TestClient(app) as test_client:
         yield test_client
 
+
+@pytest.fixture(scope="function")
+def test_user(db_session):
+    from users.models import UserModel
+    user = UserModel(username="testuser")
+    user.set_password("secret")
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+    return user
+
+
+
+@pytest.fixture(scope="function")
+def authenticated_client(client, test_user):
+    def override_auth():
+        return test_user
+    app.dependency_overrides[get_authenticated_user] = override_auth
+    yield client
+    app.dependency_overrides.pop(get_authenticated_user, None)
 
 @pytest.fixture(scope="function")
 def db_session():
