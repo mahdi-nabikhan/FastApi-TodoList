@@ -8,13 +8,18 @@ import datetime
 from core.config import setting
 from jwt.exceptions import DecodeError, InvalidSignatureError
 
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)
 
 
 def get_authenticated_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db),
 ):
+    if not credentials or credentials.credentials:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Authentications failled token not provided'
+        )
     token = credentials.credentials
     try:
         decoded = jwt.decode(token, setting.SECRET_KEY, algorithms=["HS256"])
