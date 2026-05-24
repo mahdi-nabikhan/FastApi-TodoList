@@ -7,13 +7,13 @@ from pathlib import Path
 from dotenv import load_dotenv
 from tasks.models import *
 from users.models import *
-# ابتدا مسیر و متغیرهای محیطی را بارگذاری کنید
+
 BASE_DIR = Path(__file__).resolve().parent.parent / 'core'
 ENV_PATH = BASE_DIR / '.env'
 load_dotenv(ENV_PATH)
 
-# حالا که متغیرها در دسترس هستند، می‌توانیم از مدل‌ها import کنیم
-from core.database import Base   # ← این خط را به اینجا منتقل کردیم
+
+from core.database import Base   
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -30,8 +30,6 @@ if DATABASE_URL:
     config.set_main_option('sqlalchemy.url', DATABASE_URL)
 else:
     raise ValueError('SQLALCHEMY_DATABASE_URL is not set in the environment variables')
-
-# بقیه کد بدون تغییر
 def run_migrations_offline() -> None:
     url = config.get_main_option("sqlalchemy.url")
     context.configure(

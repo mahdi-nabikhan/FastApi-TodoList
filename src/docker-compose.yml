@@ -17,7 +17,7 @@ services:
       timeout: 5s
       retries: 5
 
-  backend:
+  todo-backend:
     build:
       context: .
       dockerfile: Dockerfile.Backend
@@ -26,7 +26,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    
     ports:
       - "8000:8000"
     environment:
       PYTHONPATH: /app/src  
+      SQLALCHEMY_DATABASE_URL: postgresql://postgres:postgres123@db:5432/postgres
+      SECRET_KEY: z_f%#7x&0!n6uuamyca%y5swv1(9e=u=wu9s#wy(3f-k__k777
