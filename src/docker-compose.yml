@@ -20,7 +20,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Dockerfile.Backend   # ← نام فایل Docker خود را اینجا اضافه کنید
+      dockerfile: Dockerfile.Backend
     container_name: todo-backend
     restart: always
     depends_on:
@@ -28,6 +28,5 @@ services:
         condition: service_healthy
     ports:
       - "8000:8000"
-    volumes:
-      - ./core:/usr/core   # مطمئن شوید مسیر در Dockerfile صحیح است
-    command: bash -c 'fastapi dev --host 0.0.0.0 --port 8000'
+    environment:
+      PYTHONPATH: /app/src  
