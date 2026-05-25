@@ -15,16 +15,13 @@ def get_authenticated_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db),
 ):
-    if not credentials or credentials.credentials:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Authentications failled token not provided'
-        )
+ 
     token = credentials.credentials
     try:
         decoded = jwt.decode(token, setting.SECRET_KEY, algorithms=["HS256"])
 
         user_id = decoded.get("user_id")
+        print(user_id)
         if not user_id:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

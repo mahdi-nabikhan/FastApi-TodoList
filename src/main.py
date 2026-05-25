@@ -1,4 +1,4 @@
-from fastapi import FastAPI,Request
+from fastapi import FastAPI,Request,Depends
 from contextlib import asynccontextmanager
 from tasks.routes import router as task_router
 from fastapi_swagger import patch_fastapi
@@ -6,6 +6,7 @@ from users.routes import router as user_router
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 import time
+from core.auth.jwt_auth import get_authenticated_user
 @asynccontextmanager
 async def lifespan(app:FastAPI):
     yield
