@@ -7,7 +7,7 @@ from users.utils import generate_token
 from core.database import get_db
 from typing import List
 from core.auth.jwt_auth import *
-
+from core.email_util import send_email
 router = APIRouter(tags=["users router"])
 
 
@@ -76,3 +76,12 @@ async def user_refresh_token(
     return JSONResponse(
         content={"detail": "user logged in successfully", "refresh token": access_token}
     )
+
+@router.post("/send-test-email")
+async def test_email():
+    await send_email(
+        subject="Test Email",
+        recipients=["user@example.com"],
+        body="<h1>Hello</h1><p>This is a test email.</p>"
+    )
+    return {"message": "Email sent"}
