@@ -1,0 +1,125 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .navbar {
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+  }
+
+  .nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .logo a {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    background: linear-gradient(135deg, #1e2b6e, #3b82f6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    letter-spacing: -0.5px;
+  }
+
+  /* Hide checkbox and mobile toggle button by default */
+  .menu-toggle {
+    display: none;
+    cursor: pointer;
+    font-size: 1.8rem;
+    user-select: none;
+  }
+
+  #nav-checkbox {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #1f2937;
+    transition: 0.2s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #3b82f6;
+    transition: 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: #1e3a8a;
+  }
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  .btn-cta {
+    background: #1e3a8a;
+    color: white !important;
+    padding: 0.5rem 1.3rem !important;
+    border-radius: 40px;
+    font-weight: 600;
+    transition: 0.2s;
+  }
+  .btn-cta:hover {
+    background: #142c66;
+    transform: translateY(-2px);
+  }
+  .btn-cta::after {
+    display: none;
+  }
+
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+    .nav-links {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem 0 1rem 0;
+      margin-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+    }
+    /* When checkbox is checked, show menu */
+    #nav-checkbox:checked ~ .nav-links {
+      display: flex;
+    }
+    .nav-links a {
+      width: 100%;
+    }
+    .btn-cta {
+      text-align: center;
+      width: fit-content;
+    }
+  }
