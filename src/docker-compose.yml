@@ -16,7 +16,18 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
+  redis:
+      image : redis-alpine
+      container_name: redis
+      ports :
+        - '6379:6379'
+      healthcheck:
+        test: ["CMD", "redis-cli", "ping"]
+        interval: 10s
+        timeout: 30s
+        retries: 5
+        start_period: 30s
+  
   todo-backend:
     build:
       context: .
@@ -26,6 +37,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     
     ports:
       - "8000:8000"
@@ -33,3 +46,4 @@ services:
       PYTHONPATH: /app/src  
       SQLALCHEMY_DATABASE_URL: postgresql://postgres:postgres123@db:5432/postgres
       SECRET_KEY: z_f%#7x&0!n6uuamyca%y5swv1(9e=u=wu9s#wy(3f-k__k777
+      REDIS_URL: redis://redis:6379
