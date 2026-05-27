@@ -15,64 +15,43 @@ def get_authenticated_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db),
 ):
- 
+      
+    if not credentials:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="توکن ارائه نشده یا فرمت Authorization اشتباه است (باید Bearer <token>)"
+        )
+    
     token = credentials.credentials
+    
     try:
         decoded = jwt.decode(token, setting.SECRET_KEY, algorithms=["HS256"])
-
-        user_id = decoded.get("user_id")
-        print(user_id)
-        if not user_id:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Authentication failed: user_id not in payload",
-            )
-
+        
+        
         if decoded.get("type") != "access":
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Authentication failed: token type is not access",
-            )
-
-        # اصلاح بررسی انقضا
-        exp_timestamp = decoded.get("exp")
-        if not exp_timestamp:
-            raise HTTPException(status_code=401, detail="No expiration in token")
-        current_timestamp = datetime.datetime.now().timestamp()
-        if current_timestamp > exp_timestamp:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Authentication failed: token expired",
-            )
-
-        user_obj = db.query(UserModel).filter_by(id=user_id).one_or_none()
-        if user_obj is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Authentication failed: user not found",
-            )
-
+            raise HTTPException(status_code=401, detail="Invalid token type: expected 'access'")
+        
+        user_id = decoded.get("user_id")
+        if not user_id:
+            raise HTTPException(status_code=401, detail="user_id not found in token payload ")   
+        
+        user_obj = db.query(UserModel).filter_by(id=user_id).first()
+        if not user_obj:
+            raise HTTPException(status_code=401, detail="User not found")
+        
         return user_obj
-
-    except InvalidSignatureError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Authentication failed: invalid signature",
-        )
-    except DecodeError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Authentication failed: decode error",
-        )
+    
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired")
+    except jwt.InvalidSignatureError:
+        raise HTTPException(status_code=401, detail=" Invalid token signature ")
+    except jwt.DecodeError:
+        raise HTTPException(status_code=401, detail="Malformed token (decoding error)  ")
     except HTTPException:
         raise
-    except Exception as err:
-        #
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"Authentication failed: {str(err)}",
-        )
-
+    except Exception as e:
+        print(f"Unexpected auth error: {e}")
+        raise HTTPException(status_code=401, detail="  Authentication failed due to internal error")
 
 def decode_refresh_token(token: str):
     try:
