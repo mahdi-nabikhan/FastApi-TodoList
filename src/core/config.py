@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     MAIL_FROM_NAME :str = 'Admin'             
     MAIL_STARTTLS: bool = False        
     MAIL_SSL_TLS: bool = False        
-    MAIL_USE_CREDENTIALS: bool = True  
+
 
 
 setting = Settings()

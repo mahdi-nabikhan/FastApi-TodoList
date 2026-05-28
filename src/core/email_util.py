@@ -10,7 +10,7 @@ conf=ConnectionConfig(
     MAIL_FROM_NAME=setting.MAIL_FROM_NAME,
     MAIL_STARTTLS=setting.MAIL_STARTTLS,
     MAIL_SSL_TLS=setting.MAIL_SSL_TLS,
-    MAIL_USE_CREDENTIALS=setting.MAIL_USE_CREDENTIALS,
+    
     
 )
 
