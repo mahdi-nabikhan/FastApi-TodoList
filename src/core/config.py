@@ -18,6 +18,9 @@ class Settings(BaseSettings):
     MAIL_STARTTLS: bool = False        
     MAIL_SSL_TLS: bool = False        
 
+    
+    CELERY_BROKER_URL:str = 'redis://redis:6479/3'
+    CELERY_BACKEND_URL:str ='redis://redis:6479/3'
 
 
 setting = Settings()
