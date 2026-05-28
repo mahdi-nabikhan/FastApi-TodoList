@@ -1,4 +1,18 @@
 services:
+  worker: 
+    build: 
+      context: . 
+      dockerfile: Dockerfile.Backend 
+    container_name: celery-worker
+    restart: always 
+    command: celery -A core.celery_app worker --loglevel=info 
+    depends_on: 
+      redis: 
+        condition: service_healthy
+    environment:
+      SQLALCHEMY_DATABASE_URL: postgresql://postgres:postgres123@db:5432/postgres
+      SECRET_KEY: z_f%#7x&0!n6uuamyca%y5swv1(9e=u=wu9s#wy(3f-k__k777
+      REDIS_URL: redis://redis:6379
   db:
     image: postgres:15-alpine
     container_name: fastapi_postgres
