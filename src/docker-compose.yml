@@ -56,3 +56,5 @@ services:
       - '143:143'
     volumes:
       - smtp4dev-data:/smtpdev
+volumes:
+  smtp4dev-data:
