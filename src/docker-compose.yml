@@ -27,6 +27,13 @@ services:
         timeout: 30s
         retries: 5
         start_period: 30s
+  locust:
+    image: locustio/locust
+    ports:
+      - '8089:8089'
+    volumes:
+      - ./core/locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py
   
   todo-backend:
     build:
