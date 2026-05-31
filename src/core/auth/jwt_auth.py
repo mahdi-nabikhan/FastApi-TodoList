@@ -8,7 +8,6 @@ from core.database import get_db
 from core.config import setting
 
 
-security = HTTPBearer(auto_error=False)
 
 
 def get_authenticated_user(

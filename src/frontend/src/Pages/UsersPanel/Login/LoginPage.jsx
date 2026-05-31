@@ -22,7 +22,7 @@ export default function LoginPage() {
     }).then(res =>{
       if (res.ok) {
         
-        navigate('/')
+        
         return res.json()
       }
     }).then(response =>{console.log(response)})
