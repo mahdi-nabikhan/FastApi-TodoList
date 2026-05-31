@@ -1,6 +1,7 @@
 // Navbar.jsx
 import React from 'react';
 import './Navbar.css'
+import {NavLink} from 'react-router-dom'
 const Navbar = () => {
   return (
     <>
@@ -15,11 +16,11 @@ const Navbar = () => {
           <label htmlFor="nav-checkbox" className="menu-toggle">☰</label>
 
           <ul className="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/features">Features</a></li>
-            <li><a href="/pricing">Pricing</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/contact" className="btn-cta">Get Started</a></li>
+            <li><NavLink to="/">Home</NavLink></li>
+            <li><NavLink to="/login">Login</NavLink></li>
+            <li><NavLink to="/regsiter">Register</NavLink></li>
+            <li><NavLink to="/about">Panel</NavLink></li>
+            <li><NavLink to="/contact" className="btn-cta">Add a Todo</NavLink></li>
           </ul>
         </div>
       </nav>
