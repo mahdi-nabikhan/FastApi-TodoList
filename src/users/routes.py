@@ -58,14 +58,30 @@ async def user_login_jwt(request: UserLoginSchemas, db: Session = Depends(get_db
         )
     access_token = generate_access_token(user_id=user_obj.id)
     refresh_token = generate_refresh_token(user_id=user_obj.id)
-    return JSONResponse(
+    response =  JSONResponse(
         content={
             "detail": "user logged in successfully",
             "access token": access_token,
             "refresh token": refresh_token,
         }
     )
-
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=60 * 15,
+    )
+    response.set_cookie(
+        key='refresh_token',
+        value=refresh_token,
+        httponly=True,
+        secure=True,
+        samesite='lax',
+        max_age=60 * 60 * 24 * 7
+    )
+    return response
 
 @router.post("/refresh_token")
 async def user_refresh_token(
