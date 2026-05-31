@@ -13,11 +13,15 @@ export default function RegisterPage() {
       password:password,
       password_confirm:passwordConfirm
     }
-  }
-  fetch(`http://localhost:8000/register`,{
+    fetch(`http://localhost:8000/register`,{
     method :'POST',
+    headers:{
+      'Content-Type':'application/json'
+    },
     body:JSON.stringify(userInfo)
   }).then(res =>console.log(res))
+  }
+  
 
   return (
     <div className="register-container">
