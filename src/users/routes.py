@@ -69,7 +69,7 @@ async def user_login_jwt(request: UserLoginSchemas, db: Session = Depends(get_db
         key="access_token",
         value=access_token,
         httponly=True,
-        secure=True,
+        secure=False,
         samesite="lax",
         max_age=60 * 15,
     )
@@ -77,7 +77,7 @@ async def user_login_jwt(request: UserLoginSchemas, db: Session = Depends(get_db
         key='refresh_token',
         value=refresh_token,
         httponly=True,
-        secure=True,
+        secure=False,
         samesite='lax',
         max_age=60 * 60 * 24 * 7
     )
