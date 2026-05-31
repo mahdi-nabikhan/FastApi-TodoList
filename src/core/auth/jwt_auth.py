@@ -1,12 +1,12 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from users.models import UserModel
-from core.database import get_db
 from sqlalchemy.orm import Session
 import jwt
-import datetime
+
+from users.models import UserModel
+from core.database import get_db
 from core.config import setting
-from jwt.exceptions import DecodeError, InvalidSignatureError
+
 
 security = HTTPBearer(auto_error=False)
 
@@ -15,43 +15,76 @@ def get_authenticated_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db),
 ):
-      
+    # 1. No token provided
     if not credentials:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="توکن ارائه نشده یا فرمت Authorization اشتباه است (باید Bearer <token>)"
+            detail="Authorization header missing (Bearer token required)",
         )
-    
+
     token = credentials.credentials
-    
+
     try:
-        decoded = jwt.decode(token, setting.SECRET_KEY, algorithms=["HS256"])
-        
-        
-        if decoded.get("type") != "access":
-            raise HTTPException(status_code=401, detail="Invalid token type: expected 'access'")
-        
-        user_id = decoded.get("user_id")
+        # 2. Decode token
+        payload = jwt.decode(
+            token,
+            setting.SECRET_KEY,
+            algorithms=["HS256"]
+        )
+
+        # 3. Token type check
+        if payload.get("type") != "access":
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token type (access token required)",
+            )
+
+        # 4. Extract user_id
+        user_id = payload.get("user_id")
         if not user_id:
-            raise HTTPException(status_code=401, detail="user_id not found in token payload ")   
-        
-        user_obj = db.query(UserModel).filter_by(id=user_id).first()
-        if not user_obj:
-            raise HTTPException(status_code=401, detail="User not found")
-        
-        return user_obj
-    
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token payload (user_id missing)",
+            )
+
+        # 5. Find user
+        user = db.query(UserModel).filter_by(id=user_id).first()
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User not found",
+            )
+
+        return user
+
+    # 6. Token expired
     except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token has expired")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has expired",
+        )
+
+    # 7. Invalid signature
     except jwt.InvalidSignatureError:
-        raise HTTPException(status_code=401, detail=" Invalid token signature ")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token signature",
+        )
+
+    # 8. Malformed token
     except jwt.DecodeError:
-        raise HTTPException(status_code=401, detail="Malformed token (decoding error)  ")
-    except HTTPException:
-        raise
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Malformed token",
+        )
+
+    # 9. Catch unexpected errors
     except Exception as e:
-        print(f"Unexpected auth error: {e}")
-        raise HTTPException(status_code=401, detail="  Authentication failed due to internal error")
+        print(f"Auth unexpected error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Authentication service error",
+        )
 
 def decode_refresh_token(token: str):
     try:
