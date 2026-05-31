@@ -1,0 +1,57 @@
+.table-container {
+    width: 90%;
+    margin: 40px auto;
+  }
+  
+  .table-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .todo-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+  }
+  
+  .todo-table th,
+  .todo-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  .todo-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .todo-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .todo-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .btn {
+    border: none;
+    padding: 8px 12px;
+    margin: 0 4px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .details-btn {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .edit-btn {
+    background-color: #f39c12;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+  }
