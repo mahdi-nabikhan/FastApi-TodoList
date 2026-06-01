@@ -4,9 +4,10 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 from pathlib import Path
+from core.config import setting
 
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = setting.SQLALCHEMY_DATABASE_URL
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is not set")
 

@@ -3,10 +3,10 @@ from pathlib import Path
 
 
 class Settings(BaseSettings):
-    SQLALCHEMY_DATABASE_URL: str
+    SQLALCHEMY_DATABASE_URL :str = "postgresql://postgres:password@db:5432/tododb"
     SECRET_KEY: str = "test"
     model_config = SettingsConfigDict(env_file=Path(__file__).parent / ".env")
-    REDIS_URL :str
+    REDIS_URL :str = "redis://localhost:6379/0"
     
     
     MAIL_USERNAME: str = ""          

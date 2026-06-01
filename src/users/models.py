@@ -23,7 +23,7 @@ class UserModel(Base):
     password = Column(String, nullable=True)
 
     is_active = Column(Boolean, default=False)
-
+    is_superuser = Column(Boolean,default=False)
     created_date = Column(DateTime, server_default=func.now())
     updated_date = Column(
         DateTime, server_default=func.now(), server_onupdate=func.now()
