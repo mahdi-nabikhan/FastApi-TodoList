@@ -1,0 +1,56 @@
+.panel-navbar {
+    height: 70px;
+    background: #1e293b;
+    color: white;
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    padding: 0 40px;
+  
+    box-shadow: 0 4px 15px rgba(0,0,0,.15);
+  }
+  
+  .panel-logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .panel-links {
+    display: flex;
+    gap: 25px;
+    list-style: none;
+  }
+  
+  .panel-links a {
+    text-decoration: none;
+    color: #cbd5e1;
+    font-weight: 500;
+    transition: .3s;
+  }
+  
+  .panel-links a:hover {
+    color: white;
+  }
+  
+  .panel-links a.active {
+    color: #38bdf8;
+  }
+  
+  .logout-btn {
+    border: none;
+    background: #ef4444;
+    color: white;
+  
+    padding: 10px 18px;
+  
+    border-radius: 8px;
+    cursor: pointer;
+  
+    transition: .3s;
+  }
+  
+  .logout-btn:hover {
+    transform: translateY(-2px);
+  }
