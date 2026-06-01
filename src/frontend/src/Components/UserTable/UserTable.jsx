@@ -7,6 +7,8 @@ export default function UserTable() {
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [showDetailModal, setShowDetailModal] = useState(false);
+
 
     const fetchUsers = async () => {
         try {
@@ -49,6 +51,24 @@ export default function UserTable() {
             setSelectedItem(null);
         }
     };
+    const getUserDetail = async (id) => {
+        try {
+          const res = await fetch(
+            `http://localhost:8000/admin/users/${id}`,
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          );
+      
+          const data = await res.json();
+      
+          setSelectedItem(data);
+          setShowDetailModal(true);
+        } catch (err) {
+          console.log(err);
+        }
+      };
 
     if (loading) {
         return <h3 className="loading">Loading users...</h3>;
@@ -83,9 +103,9 @@ export default function UserTable() {
                             </td>
 
                             <td className="actions">
-                                <button className="btn details">Details</button>
+                                <button className="btn details" onClick={() => getUserDetail(user.id)}>Details</button>
                                 <button className="btn delete" onClick={() => {
-                                    setSelectedItem(user); // یا todo
+                                    setSelectedItem(user);
                                     setShowModal(true);
                                 }}>Delete</button>
                             </td>
@@ -100,6 +120,14 @@ export default function UserTable() {
                     setSelectedItem(null);
                 }}
                 onConfirm={handleDelete}
+            />
+            <DetailModal
+                isOpen={showDetailModal}
+                data={selectedItem}
+                onClose={() => {
+                    setShowDetailModal(false);
+                    setSelectedItem(null);
+                }}
             />
         </div>
     );
