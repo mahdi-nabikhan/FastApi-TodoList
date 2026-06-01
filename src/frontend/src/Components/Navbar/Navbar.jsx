@@ -2,7 +2,10 @@
 import React from 'react';
 import './Navbar.css'
 import {NavLink} from 'react-router-dom'
+import AddTodoModal from '../AddTodoModal/AddTodoModal';
+import { useState } from 'react';
 const Navbar = () => {
+  const [showAddModal, setShowAddModal] = useState(false)
   return (
     <>
       <nav className="navbar">
@@ -20,10 +23,20 @@ const Navbar = () => {
             <li><NavLink to="/login">Login</NavLink></li>
             <li><NavLink to="/regsiter">Register</NavLink></li>
             <li><NavLink to="/about">Panel</NavLink></li>
-            <li><NavLink to="/contact" className="btn-cta">Add a Todo</NavLink></li>
+            <button
+                className="btn-cta"
+                onClick={() => setShowAddModal(true)}
+              >
+                Add a Todo
+              </button>
           </ul>
+          
         </div>
       </nav>
+      <AddTodoModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+      />
     </>
   );
 };
