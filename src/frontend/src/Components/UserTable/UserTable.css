@@ -1,0 +1,103 @@
+.table-wrapper {
+    padding: 30px;
+    background: #f7f9fc;
+    min-height: 100vh;
+  }
+  
+  .title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #222;
+  }
+  
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  }
+  
+  .user-table thead {
+    background: #111827;
+    color: white;
+  }
+  
+  .user-table th,
+  .user-table td {
+    padding: 14px;
+    text-align: center;
+  }
+  
+  .user-table tbody tr {
+    transition: 0.2s;
+  }
+  
+  .user-table tbody tr:hover {
+    background: #f1f5f9;
+    transform: scale(1.01);
+  }
+  
+  .username {
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  /* badges */
+  .badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  
+  .badge.admin {
+    background: #dcfce7;
+    color: #166534;
+  }
+  
+  .badge.user {
+    background: #e0e7ff;
+    color: #3730a3;
+  }
+  
+  /* buttons */
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: 0.2s;
+  }
+  
+  .btn.details {
+    background: #3b82f6;
+    color: white;
+  }
+  
+  .btn.details:hover {
+    background: #2563eb;
+  }
+  
+  .btn.delete {
+    background: #ef4444;
+    color: white;
+  }
+  
+  .btn.delete:hover {
+    background: #dc2626;
+  }
+  
+  .loading {
+    text-align: center;
+    margin-top: 50px;
+  }

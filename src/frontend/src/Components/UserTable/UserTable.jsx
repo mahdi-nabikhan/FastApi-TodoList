@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./UserTable.css";
 
 export default function UserTable() {
   const [users, setUsers] = useState([]);
@@ -14,7 +15,7 @@ export default function UserTable() {
       const data = await res.json();
       setUsers(data);
     } catch (err) {
-      console.log("Error fetching users:", err);
+      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -25,14 +26,14 @@ export default function UserTable() {
   }, []);
 
   if (loading) {
-    return <h3>Loading users...</h3>;
+    return <h3 className="loading">Loading users...</h3>;
   }
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>User List</h2>
+    <div className="table-wrapper">
+      <h2 className="title">User Management</h2>
 
-      <table border="1" cellPadding="10" width="100%">
+      <table className="user-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -45,23 +46,20 @@ export default function UserTable() {
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.username}</td>
-              <td>{user.is_superuser ? "✅" : "❌"}</td>
+              <td>#{user.id}</td>
+              <td className="username">{user.username}</td>
 
               <td>
-                <button
-                  onClick={() => alert(`User ID: ${user.id}`)}
+                <span
+                  className={user.is_superuser ? "badge admin" : "badge user"}
                 >
-                  Details
-                </button>
+                  {user.is_superuser ? "Admin" : "User"}
+                </span>
+              </td>
 
-                <button
-                  style={{ marginLeft: "10px", color: "red" }}
-                  onClick={() => alert(`Delete user ${user.id}`)}
-                >
-                  Delete
-                </button>
+              <td className="actions">
+                <button className="btn details">Details</button>
+                <button className="btn delete">Delete</button>
               </td>
             </tr>
           ))}
