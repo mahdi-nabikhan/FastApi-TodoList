@@ -8,7 +8,9 @@ from core.database import get_db
 from typing import List
 from core.auth.jwt_auth import *
 from core.email_util import send_email
+from permissions.admin_permission import *
 router = APIRouter(tags=["users router"])
+
 
 
 @router.post("/login")
@@ -101,3 +103,55 @@ async def test_email():
         body="<h1>Hello</h1><p>This is a test email.</p>"
     )
     return {"message": "Email sent"}
+
+
+@router.delete("/all/users")
+async def delete_user(
+   
+    current_user: UserModel = Depends(get_superuser),
+    db: Session = Depends(get_db),
+):
+    query=db.query(UserModel).all()
+    return query
+
+@router.get("/admin/users/{user_id}")
+async def get_user_detail(
+    user_id: int,
+    current_user: UserModel = Depends(get_superuser),
+    db: Session = Depends(get_db),
+):
+    user = db.query(UserModel).filter_by(id=user_id).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+
+    return {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "is_superuser": user.is_superuser,
+    }
+    
+@router.delete("/admin/users/{user_id}")
+async def delete_user(
+    user_id: int,
+    current_user: UserModel = Depends(get_superuser),
+    db: Session = Depends(get_db),
+):
+    user = db.query(UserModel).filter_by(id=user_id).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+
+    db.delete(user)
+    db.commit()
+
+    return {
+        "detail": f"User with id {user_id} deleted successfully"
+    }
