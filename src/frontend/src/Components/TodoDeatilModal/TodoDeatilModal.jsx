@@ -1,7 +1,7 @@
 import React from 'react'
-import './TodoDetailsModal.css'
+import './TodoDeatilModal.css'
 
-export default function TodoDetailsModal({
+export default function TodoDetailModal({
   isOpen,
   onClose,
   todo

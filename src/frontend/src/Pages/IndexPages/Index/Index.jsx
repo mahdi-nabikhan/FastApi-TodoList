@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './Index.css'
 import DeleteModal from '../../../Components/DeleteModal/DeleteModal'
 import UpdateModal from '../../../Components/UpdateModal/UpdateModal'
-import TodoDetailsModal from '../../../Components/TodoDeatilModal/TodoDeatilModal'
+import TodoDetailModal from '../../../Components/TodoDeatilModal/TodoDeatilModal'
 export default function Index() {
   const [todoList, setTodoList] = useState([])
   const [showModal, setShowModal] = useState(false)
@@ -142,7 +142,7 @@ export default function Index() {
         onSave={updateTodo}
       />
 
-      <TodoDetailsModal
+      <TodoDetailModal
         isOpen={showDetailsModal}
         todo={selectedTodo}
         onClose={() => {
