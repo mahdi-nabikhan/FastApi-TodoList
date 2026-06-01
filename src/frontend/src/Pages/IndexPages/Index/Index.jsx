@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import './Index.css'
 import DeleteModal from '../../../Components/DeleteModal/DeleteModal'
 import UpdateModal from '../../../Components/UpdateModal/UpdateModal'
-
+import TodoDetailsModal from '../../../Components/TodoDeatilModal/TodoDeatilModal'
 export default function Index() {
   const [todoList, setTodoList] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [selectedTodo, setSelectedTodo] = useState(null)
   const [showEditModal, setShowEditModal] = useState(false)
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
+
 
 
   function fetchTodos() {
@@ -86,7 +88,13 @@ export default function Index() {
               <td>{todo.is_complated ? '✅' : '❌'}</td>
 
               <td>
-                <button className="btn details-btn">
+                <button
+                  className="btn details-btn"
+                  onClick={() => {
+                    setSelectedTodo(todo)
+                    setShowDetailsModal(true)
+                  }}
+                >
                   Details
                 </button>
 
@@ -133,7 +141,17 @@ export default function Index() {
         }}
         onSave={updateTodo}
       />
+
+      <TodoDetailsModal
+        isOpen={showDetailsModal}
+        todo={selectedTodo}
+        onClose={() => {
+          setShowDetailsModal(false)
+          setSelectedTodo(null)
+        }}
+      />
     </div>
+
   )
 }
 
