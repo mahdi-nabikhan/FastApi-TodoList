@@ -41,7 +41,10 @@ const routers = [
       {
         index: true,
         element: <Dashboard />
-      },{path:'/todo',index:ture,element:<TodoPage/>}
+      },{
+        path:'/todo',
+        index: true,
+        element:<TodoPage/>}
     ]
   }
 ]
