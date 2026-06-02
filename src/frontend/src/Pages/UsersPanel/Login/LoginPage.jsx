@@ -1,56 +1,53 @@
-import React, { useState } from 'react'
-import {useNavigate} from 'react-router-dom'
-import './LoginPage.css'
+import React, { useState } from "react";
+import useLogin from "../../../Hooks/useLogin";
+
 export default function LoginPage() {
-  const [username,setUsername]=useState('')
-  const[password,setPassword] = useState('')
-  const navigate = useNavigate()
-  const LoginHandler = (event) =>{
-    event.preventDefault()
-    let Data ={
-      username,
-      password
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { login, loading, error } = useLogin();
+
+  const LoginHandler = async (event) => {
+    event.preventDefault();
+
+    try {
+      const result = await login(
+        username,
+        password
+      );
+
+      console.log(result);
+    } catch (err) {
+      console.log(err);
     }
-    fetch('http://localhost:8000/login/jwt',{
-      
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json'
-      },
-      credentials :'include',
-      body:JSON.stringify(Data)
-    }).then(res =>{
-      if (res.ok) {
-        
-        
-        return res.json()
-      }
-    }).then(response =>{console.log(response)})
-  }
+  };
 
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={LoginHandler}>
-        <h2>Login</h2>
+    <form onSubmit={LoginHandler}>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) =>
+          setUsername(e.target.value)
+        }
+      />
 
-        <input
-          type="username"
-          placeholder="Username"
-          className="login-input"
-          onChange={(event)=>{setUsername(event.target.value)}}
-        />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) =>
+          setPassword(e.target.value)
+        }
+      />
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="login-input"
-          onChange={(event) =>{setPassword(event.target.value)}}
-        />
+      <button
+        type="submit"
+        disabled={loading}
+      >
+        {loading ? "Loading..." : "Login"}
+      </button>
 
-        <button type="submit" className="login-btn">
-          Sign In
-        </button>
-      </form>
-    </div>
-  )
+      {error && <p>{error}</p>}
+    </form>
+  );
 }
