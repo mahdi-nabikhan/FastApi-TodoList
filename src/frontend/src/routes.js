@@ -9,6 +9,7 @@ import RegisterPage from './Pages/UsersPanel/Register/RegisterPage'
 import TODODeatil from './Pages/IndexPages/TODODeatil/TODODeatil'
 
 import Dashboard from './Pages/Panel/Dashboard/Dashboard'
+import TodoPage from './Pages/Panel/TodoPage/TodoPage'
 
 const routers = [
   {
@@ -40,7 +41,7 @@ const routers = [
       {
         index: true,
         element: <Dashboard />
-      }
+      },{path:'/todo',index:ture,element:<TodoPage/>}
     ]
   }
 ]

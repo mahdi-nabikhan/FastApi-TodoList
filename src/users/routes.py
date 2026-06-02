@@ -157,7 +157,7 @@ async def delete_user(
     }
     
 
-@router.post("/register")
+@router.post("/admin/register")
 async def admin_register(request: UserRegisterSchemas, db: Session = Depends(get_db)):
     if db.query(UserModel).filter_by(username=request.username).first():
         raise HTTPException(
