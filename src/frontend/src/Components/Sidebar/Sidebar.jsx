@@ -9,7 +9,7 @@ export default function Sidebar() {
                 <h3 className="sidebarTitle">Dashbord</h3>
                 <ul className="sidebarList">
                     <Link className='text-link' to={'/'}><li className="sidebarListItem active">Home</li></Link>
-                    <Link className='text-link' to={'panel/todo'}><li className="sidebarListItem active">Todo</li></Link>
+                    <Link className='text-link' to={'todo'}><li className="sidebarListItem active">Todo</li></Link>
                     <Link className='text-link' to={'/'}><li className="sidebarListItem active">Home</li></Link>
                 </ul>
             </div>
