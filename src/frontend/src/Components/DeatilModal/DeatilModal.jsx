@@ -1,4 +1,4 @@
-import './DetailModal.css'
+import './DeatilModal.css'
 
 export default function DetailModal({ isOpen, onClose, data }) {
     if (!isOpen || !data) return null;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./UserTable.css";
 import DeleteModal from '../DeleteModal/DeleteModal'
+import DetailModal from '../DeatilModal/DeatilModal'
 
 export default function UserTable() {
     const [users, setUsers] = useState([]);
