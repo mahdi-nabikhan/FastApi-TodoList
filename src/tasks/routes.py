@@ -3,7 +3,7 @@ from tasks.models import *
 from fastapi.responses import JSONResponse
 from tasks.schemas import *
 from sqlalchemy.orm import Session
-
+from permissions.admin_permission import get_superuser
 router = APIRouter(tags=["task router"])
 from core.database import get_db
 from typing import List
@@ -90,3 +90,43 @@ def delete_task(
     db.delete(tasks)
     db.commit()
     return JSONResponse(status_code=200, content="Task remove Successfully")
+
+
+@router.get("/panel/tasks/", response_model=List[TaskResponseSchemas])
+def get_all_tasks_for_panel(
+    db: Session = Depends(get_db),
+    user: UserModel = Depends(get_superuser),
+    completed: bool = Query(
+        None, description="filter tasks  based on being completed or not "
+    )
+):
+    query = db.query(TaskModel).all()
+    return query
+
+
+
+@router.delete("panel/delete/task/{id}", response_model=TaskResponseSchemas)
+def delete_task(
+    id: int,
+    db: Session = Depends(get_db),
+    user: UserModel = Depends(get_superuser),
+):
+    tasks = db.query(TaskModel).filter_by(user_id=user.id, id=id).first()
+    if not tasks:
+        raise HTTPException(status_code=404, detail="Task not found")
+    db.delete(tasks)
+    db.commit()
+    return JSONResponse(status_code=200, content="Task remove Successfully")
+
+
+
+@router.get("panel/task/detail/{id}", response_model=TaskResponseSchemas)
+def detail_task(
+    id: int,
+    db: Session = Depends(get_db),
+    user: UserModel = Depends(get_superuser),
+):
+    tasks = db.query(TaskModel).filter_by(id=id, user_id=user.id).first()
+    if not tasks:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return tasks
