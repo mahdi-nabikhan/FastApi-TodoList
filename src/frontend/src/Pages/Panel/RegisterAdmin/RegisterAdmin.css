@@ -1,0 +1,57 @@
+.adminRegisterCard {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,.1);
+  }
+  
+  .adminRegisterCard h2 {
+    margin-bottom: 20px;
+  }
+  
+  .formGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  .formGroup label {
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  
+  .formGroup input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+  }
+  
+  .formGroup input:focus {
+    border-color: #2563eb;
+  }
+  
+  .adminRegisterCard button {
+    width: 100%;
+    border: none;
+    background: #2563eb;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  .adminRegisterCard button:hover {
+    background: #1d4ed8;
+  }
+  
+  .adminRegisterCard button:disabled {
+    opacity: .7;
+    cursor: not-allowed;
+  }
+  
+  .message {
+    margin-top: 15px;
+    font-weight: 500;
+  }

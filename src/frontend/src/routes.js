@@ -10,6 +10,7 @@ import TODODeatil from './Pages/IndexPages/TODODeatil/TODODeatil'
 
 import Dashboard from './Pages/Panel/Dashboard/Dashboard'
 import TodoPage from './Pages/Panel/TodoPage/TodoPage'
+import RegisterAdmin from './Pages/Panel/RegisterAdmin/RegisterAdmin'
 
 const routers = [
   {
@@ -44,7 +45,12 @@ const routers = [
       },{
         path:'todo',
         index: true,
-        element:<TodoPage/>}
+        element:<TodoPage/>},
+        {
+          path:'register/admin',
+          index:true,
+          element:<RegisterAdmin/>
+        }
     ]
   }
 ]

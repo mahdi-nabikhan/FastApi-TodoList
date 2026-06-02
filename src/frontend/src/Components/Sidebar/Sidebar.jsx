@@ -10,7 +10,7 @@ export default function Sidebar() {
                 <ul className="sidebarList">
                     <Link className='text-link' to={'/'}><li className="sidebarListItem active">Home</li></Link>
                     <Link className='text-link' to={'todo'}><li className="sidebarListItem active">Todo</li></Link>
-                    <Link className='text-link' to={'/'}><li className="sidebarListItem active">Home</li></Link>
+                    <Link className='text-link' to={'register/admin'}><li className="sidebarListItem active">Register a admin</li></Link>
                 </ul>
             </div>
         </div>
