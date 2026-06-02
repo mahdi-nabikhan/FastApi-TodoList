@@ -8,7 +8,7 @@ export default function TaskTable() {
   const fetchTasks = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8000/admin/tasks",
+        "http://localhost:8000/panel/tasks",
         {
           method: "GET",
           credentials: "include",
