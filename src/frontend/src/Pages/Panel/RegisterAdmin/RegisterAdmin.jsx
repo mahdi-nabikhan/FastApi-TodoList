@@ -4,6 +4,7 @@ import "./RegisterAdmin.css";
 export default function RegisterAdmin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm,setPasswordConfirm]=useState('')
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -26,6 +27,7 @@ export default function RegisterAdmin() {
           body: JSON.stringify({
             username,
             password,
+            passwordConfirm
           }),
         }
       );
@@ -77,6 +79,19 @@ export default function RegisterAdmin() {
             }
           />
         </div>
+        <div className="formGroup">
+          <label>Confirm Password</label>
+
+          <input
+            type="password"
+            placeholder="confirm password"
+            value={passwordConfirm}
+            onChange={(e) =>
+              setPasswordConfirm(e.target.value)
+            }
+          />
+        </div>
+
 
         <button
           type="submit"
