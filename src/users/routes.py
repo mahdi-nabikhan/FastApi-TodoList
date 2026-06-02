@@ -105,8 +105,8 @@ async def test_email():
     return {"message": "Email sent"}
 
 
-@router.delete("/all/users")
-async def delete_user(
+@router.get("/all/users")
+async def get_all_user(
    
     current_user: UserModel = Depends(get_superuser),
     db: Session = Depends(get_db),
@@ -155,3 +155,18 @@ async def delete_user(
     return {
         "detail": f"User with id {user_id} deleted successfully"
     }
+    
+
+@router.post("/register")
+async def admin_register(request: UserRegisterSchemas, db: Session = Depends(get_db)):
+    if db.query(UserModel).filter_by(username=request.username).first():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="username already exist"
+        )
+    user_obj = UserModel(username=request.username)
+    user_obj.set_password(request.password)
+    user_obj.is_superuser = True
+    db.add(user_obj)
+    db.commit()
+
+    return JSONResponse(content="user registerd successfully")
