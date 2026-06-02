@@ -22,6 +22,12 @@ export default function useLogin() {
                     data.detail || "Login failed"
                   );
             }
+            console.log('this is data',data.is_superuser)
+            if(data.is_superuser){
+                navigate('/panel')
+                return data
+            }
+            
             navigate('/')
             return data
         }catch(err){

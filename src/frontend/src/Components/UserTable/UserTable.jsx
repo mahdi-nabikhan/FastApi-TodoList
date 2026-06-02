@@ -55,7 +55,7 @@ export default function UserTable() {
     const getUserDetail = async (id) => {
         try {
           const res = await fetch(
-            `http://localhost:8000/admin/users/${id}`,
+            `http://localhost:8000/admin/detail/users/${id}`,
             {
               method: "GET",
               credentials: "include",

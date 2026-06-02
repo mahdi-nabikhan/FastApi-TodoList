@@ -63,6 +63,7 @@ async def user_login_jwt(request: UserLoginSchemas, db: Session = Depends(get_db
     response =  JSONResponse(
         content={
             "detail": "user logged in successfully",
+            "is_superuser": user_obj.is_superuser,
             "access token": access_token,
             "refresh token": refresh_token,
         }
@@ -114,7 +115,7 @@ async def get_all_user(
     query=db.query(UserModel).all()
     return query
 
-@router.get("/admin/users/{user_id}")
+@router.get("/admin/detail/users/{user_id}")
 async def get_user_detail(
     user_id: int,
     current_user: UserModel = Depends(get_superuser),
@@ -170,3 +171,4 @@ async def admin_register(request: UserRegisterSchemas, db: Session = Depends(get
     db.commit()
 
     return JSONResponse(content="user registerd successfully")
+
