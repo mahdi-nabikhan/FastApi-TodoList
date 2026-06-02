@@ -1,233 +1,318 @@
-# Todo App - FastAPI & React
+# 🚀 Todo App - FastAPI & React
 
-A modern Full-Stack Todo Application built with **FastAPI**, **React**, **JWT Authentication**, and **Docker Compose**.
-This project combines a scalable backend API with a modern React frontend inside a unified project structure.
+A modern Full-Stack Todo Application built with FastAPI, React, PostgreSQL, JWT Authentication, and Docker Compose.
 
----
-
-# 🚀 Features
-
-## Backend (FastAPI)
-
-* RESTful API architecture
-* JWT Authentication & Authorization
-* User Registration & Login
-* Protected Routes
-* CRUD operations for Todos
-* SQLAlchemy ORM
-* PostgreSQL Database
-* Pydantic Validation
-* Pytest Testing
-* Environment Variables Support
-
-## Frontend (React)
-
-* React SPA Architecture
-* Axios API Integration
-* Authentication Flow
-* Protected Routes
-* Responsive UI
-* Component-Based Structure
-
-## DevOps
-
-* Docker
-* Docker Compose
-* Containerized Development Environment
+This project demonstrates how to build a scalable web application using a modern backend architecture alongside a React frontend.
 
 ---
 
-# 🛠 Tech Stack
+## ✨ Features
 
-## Backend
+### Authentication
+
+* User Registration
+* User Login
+* JWT Authentication
+* Access & Refresh Tokens
+* HTTPOnly Cookie Authentication
+* Protected Routes
+
+### Todo Management
+
+* Create Todo
+* Update Todo
+* Delete Todo
+* View Todo Details
+* Pagination Support
+* User-specific Todos
+
+### Admin Panel
+
+* Admin Dashboard
+* User Management
+* View User Details
+* Delete Users
+* Create Superusers
+
+### Backend
 
 * FastAPI
-* Python
-* SQLAlchemy
+* SQLAlchemy ORM
+* Alembic Migrations
 * PostgreSQL
-* JWT
-* Pytest
+* Pydantic Validation
+* Modular Project Structure
+* Environment Variables
+* Pytest Testing
 
-## Frontend
+### Frontend
 
 * React
-* JavaScript
-* Axios
 * React Router
+* Custom Hooks
+* Protected Pages
+* Modal Components
+* Responsive Design
+* Dashboard UI
 
-## DevOps
+### DevOps
 
 * Docker
 * Docker Compose
+* Containerized Environment
 
 ---
 
-# 📂 Project Structure
+## 🏗 Architecture
 
-```bash id="v5lq2h"
-project/
-│
-├── src/
-│   │
-│   ├── backend/
-│   │   ├── app/
-│   │   ├── tests/
-│   │   ├── requirements.txt
-│   │   └── Dockerfile
-│   │
-│   └── frontend/
-│       ├── src/
-│       ├── public/
-│       ├── package.json
-│       ├── Dockerfile
-│       └── vite.config.js
-│
-├── docker-compose.yml
-├── .env
-└── README.md
+```text
+React Frontend
+        │
+        ▼
+FastAPI Backend
+        │
+        ▼
+ PostgreSQL
+```
+
+Authentication Flow:
+
+```text
+Login
+  │
+  ▼
+Generate JWT Tokens
+  │
+  ▼
+Store Tokens in HTTPOnly Cookies
+  │
+  ▼
+Protected API Access
 ```
 
 ---
 
-# ⚙️ Installation
+## 🛠 Tech Stack
 
-## Clone Repository
+### Backend
 
-```bash id="9zjlwm"
+* Python
+* FastAPI
+* SQLAlchemy
+* PostgreSQL
+* Alembic
+* JWT
+* Pytest
+
+### Frontend
+
+* React
+* JavaScript
+* React Router
+* Fetch API
+* CSS
+
+### DevOps
+
+* Docker
+* Docker Compose
+
+---
+
+## 📂 Project Structure
+
+```bash
+src/
+│
+├── users/
+├── tasks/
+├── permissions/
+├── core/
+├── migrations/
+│
+├── frontend/
+│   ├── Components/
+│   ├── Hooks/
+│   ├── Pages/
+│   ├── Layouts/
+│   └── Router/
+│
+└── tests/
+```
+
+---
+
+## ⚙️ Installation
+
+### Clone Repository
+
+```bash
 git clone https://github.com/yourusername/todo-app.git
+
 cd todo-app
 ```
 
 ---
 
-# 🐳 Run with Docker Compose
+## 🐳 Run with Docker
 
-Build and run all services:
+Build containers:
 
-```bash id="4vkk54"
-docker-compose up --build
+```bash
+docker compose up --build
 ```
 
-Run in detached mode:
+Run in background:
 
-```bash id="8hxcn8"
-docker-compose up -d
+```bash
+docker compose up -d
 ```
 
 Stop containers:
 
-```bash id="z89s47"
-docker-compose down
+```bash
+docker compose down
 ```
 
 ---
 
-# 🔧 Backend Setup (Without Docker)
+## 🔧 Backend Development
 
-```bash id="1jlwmn"
-cd src/backend
+Create virtual environment:
 
+```bash
 python -m venv venv
+```
 
+Activate environment:
+
+```bash
 source venv/bin/activate
-# Windows:
-# venv\Scripts\activate
 
+# Windows
+
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-Run backend server:
+Run FastAPI:
 
-```bash id="7oofg0"
-uvicorn app.main:app --reload
+```bash
+uvicorn main:app --reload
 ```
 
 ---
 
-# 💻 Frontend Setup (Without Docker)
+## 💻 Frontend Development
 
-```bash id="ndy7hl"
-cd src/frontend
-
+```bash
 npm install
+
 npm run dev
 ```
 
 ---
 
-# 🧪 Run Tests
+## 🗄 Database Migrations
 
-```bash id="mqyrp5"
-cd src/backend
+Create migration:
 
+```bash
+alembic revision --autogenerate -m "migration message"
+```
+
+Apply migration:
+
+```bash
+alembic upgrade head
+```
+
+---
+
+## 🔐 Authentication
+
+The application uses JWT Authentication with HTTPOnly Cookies.
+
+### Access Token
+
+Used for protected API requests.
+
+### Refresh Token
+
+Used to generate a new access token without requiring the user to log in again.
+
+---
+
+## 📌 Main API Endpoints
+
+### Authentication
+
+| Method | Endpoint       |
+| ------ | -------------- |
+| POST   | /register      |
+| POST   | /login/jwt     |
+| POST   | /refresh_token |
+
+### Tasks
+
+| Method | Endpoint          |
+| ------ | ----------------- |
+| GET    | /tasks            |
+| POST   | /tasks            |
+| PUT    | /task/{id}        |
+| DELETE | /delete/task/{id} |
+
+### Admin
+
+| Method | Endpoint          |
+| ------ | ----------------- |
+| GET    | /all/users        |
+| GET    | /admin/users/{id} |
+| DELETE | /admin/users/{id} |
+
+---
+
+## 🧪 Testing
+
+Run all tests:
+
+```bash
 pytest
 ```
 
 ---
 
-# 🔐 Authentication
+## 🚧 Future Improvements
 
-This project uses **JWT Authentication** for securing API endpoints.
-
-Features:
-
-* User Registration & Login
-* Access Token Authentication
-* Protected Routes
-* User-specific Todo Management
-
----
-
-# 📌 API Endpoints
-
-## Authentication
-
-* `POST /register`
-* `POST /login`
-
-## Todo
-
-* `GET /todos`
-* `POST /todos`
-* `PUT /todos/{id}`
-* `DELETE /todos/{id}`
-
----
-
-# 🌐 Services
-
-| Service        | Description                   |
-| -------------- | ----------------------------- |
-| Backend        | FastAPI API Server            |
-| Frontend       | React Application             |
-| Database       | PostgreSQL                    |
-| Docker Compose | Multi-container orchestration |
-
----
-
-# 📈 Future Improvements
-
-* Refresh Token Support
 * Redis Caching
 * Celery Background Tasks
+* Email Verification
+* Password Reset
+* Role-Based Permissions
 * CI/CD Pipeline
 * Kubernetes Deployment
+* Nginx Reverse Proxy
 * WebSocket Notifications
 
 ---
 
-# 🤝 Contributing
+## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome.
-
----
-
-# 📄 License
-
-This project is licensed under the MIT License.
+Pull requests, issues, and feature suggestions are welcome.
 
 ---
 
-# 👨‍💻 Developer
+## 📄 License
 
-Built with ❤️ using FastAPI, React & Docker
+MIT License
+
+---
+
+## 👨‍💻 Developer
+
+Built with ❤️ using FastAPI, React, PostgreSQL, Docker, and JWT Authentication.
