@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./TaskTable.css";
-
+import DeleteModal from "../DeleteModal/DeleteModal";
 export default function TaskTable() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const fetchTasks = async () => {
     try {
@@ -40,6 +42,30 @@ export default function TaskTable() {
       </div>
     );
   }
+  const handleDeleteTask = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/panel/delete/task/${selectedTask.id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        setTasks((prev) =>
+          prev.filter(
+            (task) => task.id !== selectedTask.id
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setShowDeleteModal(false);
+      setSelectedTask(null);
+    }
+  };
 
   return (
     <div className="tasks-table-container">
@@ -116,9 +142,10 @@ export default function TaskTable() {
 
                   <button
                     className="delete-btn"
-                    onClick={() =>
-                      console.log("Delete", task.id)
-                    }
+                    onClick={() => {
+                      setSelectedTask(task);
+                      setShowDeleteModal(true);
+                    }}
                   >
                     Delete
                   </button>
@@ -128,6 +155,15 @@ export default function TaskTable() {
           ))}
         </tbody>
       </table>
+      <DeleteModal
+        isOpen={showDeleteModal}
+        todo={selectedTask}
+        onClose={() => {
+          setShowDeleteModal(false);
+          setSelectedTask(null);
+        }}
+        onConfirm={handleDeleteTask}
+      />
     </div>
   );
 }
