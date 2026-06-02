@@ -9,11 +9,13 @@ export default function Index() {
   const [selectedTodo, setSelectedTodo] = useState(null)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showDetailsModal, setShowDetailsModal] = useState(false)
-
+  const [currentPage, setCurrentPage] = useState(1)
+  const [limit] = useState(3)
+  const offset = (currentPage - 1) * limit
 
 
   function fetchTodos() {
-    fetch('http://localhost:8000/tasks/?limit=10&offset=0', {
+    fetch(`http://localhost:8000/tasks/?limit=${limit}&offset=${offset}`, {
       method: 'GET',
       credentials: 'include'
     })
@@ -23,7 +25,7 @@ export default function Index() {
 
   useEffect(() => {
     fetchTodos()
-  }, [])
+  }, [currentPage])
 
   const deleteTodo = () => {
     fetch(`http://localhost:8000/delete/task/${selectedTodo.id}`, {
@@ -122,6 +124,28 @@ export default function Index() {
           ))}
         </tbody>
       </table>
+      <div className="pagination">
+        <button
+          disabled={currentPage === 1}
+          onClick={() =>
+            setCurrentPage(prev => prev - 1)
+          }
+        >
+          Previous
+        </button>
+
+        <span>
+          Page {currentPage}
+        </span>
+
+        <button
+          onClick={() =>
+            setCurrentPage(prev => prev + 1)
+          }
+        >
+          Next
+        </button>
+      </div>
 
       <DeleteModal
         isOpen={showModal}
