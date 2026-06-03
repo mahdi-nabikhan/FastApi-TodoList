@@ -77,5 +77,16 @@ services:
       - '143:143'
     volumes:
       - smtp4dev-data:/smtpdev
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
 volumes:
   smtp4dev-data:
